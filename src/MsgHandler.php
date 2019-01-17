@@ -1,22 +1,45 @@
 <?php
 
 function saveInfo($data, $kinds){
-    $data_path = '';
     if($kinds == "merger"){
-        $data_path = "../merger_info/". $data['mID']. ".dat";
+        $prefix = "../merger_info/";
+        $info_path = $prefix. $data['mID']. ".dat";
+        $block_hgt_path = $prefix. "blcok_hgt/hgt_".$data['mID']. ".dat";
+        
+        $info_data = array(
+            'mID' => $data['mID'],
+            'ip' => $data['ip'],
+            'port'=> $data['port'],
+            'mCert'=> $data['mCert'],
+        );
+
+        $block_hgt_data = array(
+            'mID' => $data['mID'],
+            'time' => $data['time'],
+            'hgt' => $data['hgt']
+        );
+        file_put_contents($info_path, serialize($info_data));
+        file_put_contents($block_hgt_path, serialize($block_hgt_data));
     }
     else{
-        $data_path = "../se_info/". $data['seID']. ".dat";
+        $info_path = "../se_info/". $data['seID']. ".dat";
+        file_put_contents($info_path, serialize($data));
     }
-    file_put_contents($data_path, serialize($data));
 }
 
 function getAllMergerInfo(){
     $merger_list = array();
-    $files = glob("../merger_info/*.dat");
-    foreach($files as $merger) {
-        $info = unserialize(file_get_contents($merger));
-        array_push($merger_list, $info);
+    $it = new DirectoryIterator("glob://../merger_info/*.dat");
+    foreach($it as $merger) {
+        $merger_info = unserialize(file_get_contents($merger));
+
+        $block_hgt_path = "../merger_info/block_hgt/hgt_". $merger->getFileName();
+        $hgt_info = unserialize(file_get_contents($block_hgt_path));
+        
+        $merger_info['time'] = $hgt_info['time'];
+        $merger_info['hgt'] = $hgt_info['hgt'];
+
+        array_push($merger_list, $merger_info);
     }
     return $merger_list;
 }
@@ -31,19 +54,6 @@ function getAllSeInfo(){
     return $se_list;
 }
 
-function getSpecificInfo($id, $kinds){
-    $file = '';
-    if(kinds == "merger"){
-        $file = "../merger_info";
-    }
-    else{
-        $file = "../se_info";
-    }
-    $file .= ($id.".dat");
-    $info = file_get_contents(unserialize($file));
-    return $info;
-}
-
 function checkMergerJson($json_data){
     if($json_data === false){
         return false;
@@ -51,7 +61,9 @@ function checkMergerJson($json_data){
     if(isset($json_data['mID']) && 
         isset($json_data['ip']) && 
         isset($json_data['port']) && 
-        isset($json_data['mCert'])){
+        isset($json_data['mCert']) &&
+        isset($json_data['hgt']) &&
+        isset($json_data['time'])){
         
         return true;
     }
