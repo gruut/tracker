@@ -11,4 +11,4 @@ $json_data = json_decode($post_str,true);
 $merger_list = getAllMergerInfo();
 
 jsonResponse($merger_list);
-saveInfo($json_data, "se");
+saveSeInfo($json_data, "se");

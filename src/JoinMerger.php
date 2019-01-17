@@ -19,4 +19,4 @@ $merger_list = getAllMergerInfo();
 $se_list = getAllSeInfo();
 
 jsonResponse($merger_list, $se_list);
-saveInfo($json_data, "merger");
+saveMergerInfo($json_data);
