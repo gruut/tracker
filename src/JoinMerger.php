@@ -5,8 +5,7 @@ if(empty($_POST)){
     return;
 }
 
-$post_str = file_get_contents("php://input");
-$json_data = json_decode($post_str,true);
+$json_data = json_decode($_POST['message'],true);
 
 if(!checkMergerJson($json_data)){
     header("Content-type: application/json");
