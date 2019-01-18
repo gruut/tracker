@@ -1,5 +1,5 @@
 <?php
-
+//file로 각 Data들을 관리.
 const SE_PREFIX = "../se_info/";
 const MERGER_PREFIX = "../merger_info/";
 const BLOCK_HGT_PREFIX =  "../block_hgt/";
