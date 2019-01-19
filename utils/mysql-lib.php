@@ -1,4 +1,4 @@
-<?
+<?php
 class DBConfig {
 
     var $host;
@@ -97,20 +97,15 @@ class DBConfig {
 
 $_GLOBAL_DB = new DBConfig();
 
-function mysql_open_($id = 'isrl', $pass = 'whnY39aHqC3wsncu', $db = 'seclab'){
+function mysql_open_($json_data, $id = 'blackiron', $pass = 'jj', $db = 'tracker'){
 	global $_GLOBAL_DB;
 	$_GLOBAL_DB->config();
 	$_GLOBAL_DB->open('localhost', $id, $pass, $db ,'utf8');
 
-	foreach ($_POST as $key => $value)
-		$_POST[$key] = mysql_real_escape_string_($value); 
-
-	foreach ($_GET as $key => $value) 
-		$_GET[$key] = mysql_real_escape_string_($value); 
-
-	foreach ($_COOKIE as $key => $value)
-		$_COOKIE[$key] = mysql_real_escape_string_($value); 
-		
+	foreach ($json_data as $key => $value)
+		$json_data[$key] = mysql_real_escape_string_($value);  
+	
+	return $json_data;
 }
 
 function mysql_real_escape_string_($value){
@@ -150,6 +145,21 @@ function mysql_insert_($tbl_name, $toAdd){
    //-- Example of usage
    //$tToAdd = array('id'=>3, 'name'=>'Yo', 'salary' => 5000);
    //insertIntoDB('myTable', $tToAdd)
+}
+
+function mysql_read_all_($tbl_name){
+	$q = 'SELECT * FROM `'.$tbl_name.'`';
+	$res = mysql_query_($q) OR die(mysql_error_());
+
+	if(!$res || mysqli_num_rows($res) == 0){
+		return false;
+	}
+
+	$return_array = array();
+	while($row = mysqli_fetch_assoc($res)){
+		$return_array[] = $row;
+	}
+	return $return_array;
 }
 
 function mysql_read_($tbl_name, $toSearch){
