@@ -1,5 +1,6 @@
 <?php
-require_once('MsgHandler.php');
+require_once('../utils/mysql-lib.php');
+require_once('../utils/MsgHandler.php');
 
 if(empty($_POST)){
     return;
@@ -14,8 +15,20 @@ if(!checkMergerJson($json_data)){
     return;
 }
 
-$merger_list = getAllMergerInfo();
-$se_list = getAllSeInfo();
+$result_arr = mysql_open_($json_data);
+
+$merger_list = mysql_read_all('merger');
+$se_list = mysql_read_all('se');
 
 jsonResponse($merger_list, $se_list);
-saveMergerInfo($json_data);
+
+$check_exist = mysql_read_urecord_('merger', 'mID', $result_arr['mID']);
+if(!$check_exist){
+    mysql_insert_('merger', $result_arr);
+}
+else{
+    mysql_update_urecordm_('merger', $result_arr, 'mID', $result_arr['mID']);
+}
+
+mysql_close();
+
