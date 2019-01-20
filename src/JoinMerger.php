@@ -8,7 +8,7 @@ if(empty($_POST)){
 
 $json_data = json_decode($_POST['message'],true);
 
-if(!checkMergerJson($json_data)){
+if(!checkMergerInfo($json_data)){
     header("Content-type: application/json");
     http_response_code(500);
     echo $json_data;
