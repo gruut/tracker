@@ -97,7 +97,7 @@ class DBConfig {
 
 $_GLOBAL_DB = new DBConfig();
 
-function mysql_open_($json_data, $id = 'blackiron', $pass = 'jj', $db = 'tracker'){
+function mysql_open_($json_data, $id = 'ubuntu', $pass = 'gruut', $db = 'tracker'){
 	global $_GLOBAL_DB;
 	$_GLOBAL_DB->config();
 	$_GLOBAL_DB->open('localhost', $id, $pass, $db ,'utf8');
