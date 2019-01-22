@@ -5,6 +5,7 @@ require_once('../utils/MsgHandler.php');
 if(empty($_POST)){
     return;
 }
+$result_arr = mysql_open_();
 
 $json_data = json_decode($_POST['message'], true);
 
@@ -14,8 +15,6 @@ if(!checkChainInfo($json_data)){
     echo $json_data;
     return;
 }
-
-$result_arr = mysql_open_($json_data);
 
 $check_exist = mysql_read_urecord_('merger', 'mID', $result_arr['mID']);
 if(!$check_exist){
@@ -27,4 +26,4 @@ else{
     mysql_update_urecordm_('merger', $result_arr, 'mID', $result_arr['mID']);
 }
 
-mysql_close();
+mysql_close_();
