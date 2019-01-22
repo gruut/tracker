@@ -6,10 +6,10 @@ if(empty($_POST)){
     return;
 }
 
+$result_arr = mysql_open_();
+
 header("Content-type: application/json");
 $json_data = json_decode($_POST['message'],true);
-
-$result_arr = mysql_open_($json_data);
 
 $merger_info = mysql_read_urecord_('merger', 'mID', $result_arr['mID']);
 if(!$merger_info){
@@ -20,5 +20,5 @@ if(!$merger_info){
 else {
     echo json_encode($merger_info);
 }
-mysql_close();
+mysql_close_();
 

@@ -6,6 +6,7 @@ if(empty($_POST)){
     return;
 }
 
+$result_arr = mysql_open_();
 $json_data = json_decode($_POST['message'],true);
 
 if(!checkMergerInfo($json_data)){
@@ -14,8 +15,6 @@ if(!checkMergerInfo($json_data)){
     echo $json_data;
     return;
 }
-
-$result_arr = mysql_open_($json_data);
 
 $merger_list = mysql_read_all_('merger');
 $se_list = mysql_read_all_('se');
@@ -35,5 +34,5 @@ else{
     mysql_update_urecordm_('merger', $result_arr, 'mID', $result_arr['mID']);
 }
 
-mysql_close();
+mysql_close_();
 
