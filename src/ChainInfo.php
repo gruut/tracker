@@ -22,9 +22,9 @@ if(!$check_exist){
     header("Content-type: application/json");
     http_response_code(500);
     echo $json_data;
-    return;
 }
 else{
     mysql_update_urecordm_('merger', $result_arr, 'mID', $result_arr['mID']);
 }
 
+mysql_close();
