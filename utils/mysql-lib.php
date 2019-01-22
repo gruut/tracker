@@ -97,17 +97,15 @@ class DBConfig {
 
 $_GLOBAL_DB = new DBConfig();
 
-function mysql_open_($id = 'ubuntu', $pass = 'gruut', $db = 'tracker'){
+function mysql_open_($json_data, $id = 'ubuntu', $pass = 'gruut', $db = 'tracker'){
 	global $_GLOBAL_DB;
 	$_GLOBAL_DB->config();
 	$_GLOBAL_DB->open('localhost', $id, $pass, $db ,'utf8');
 
-	foreach ($_POST as $key => $value)
-		$_POST[$key] = mysql_real_escape_string_($value); 
- 	foreach ($_GET as $key => $value) 
-		$_GET[$key] = mysql_real_escape_string_($value); 
- 	foreach ($_COOKIE as $key => $value)
-		$_COOKIE[$key] = mysql_real_escape_string_($value); 
+	foreach ($json_data as $key => $value)
+	$json_data[$key] = mysql_real_escape_string_($value);  
+
+	return $json_data;
 }
 
 function mysql_real_escape_string_($value){
