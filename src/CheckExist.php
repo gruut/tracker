@@ -9,13 +9,6 @@ if(empty($_POST)){
 header("Content-type: application/json");
 $json_data = json_decode($_POST['message'],true);
 
-if(!checkMergerInfo($json_data)){
-    http_response_code(500);
-    $response_arr["flag"] = false;
-    echo json_encode($response_arr);
-    return;
-}
-
 $result_arr = mysql_open_($json_data);
 
 $merger_info = mysql_read_urecord_('merger', 'mID', $result_arr['mID']);
