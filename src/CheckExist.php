@@ -20,5 +20,5 @@ if(!$merger_info){
 else {
     echo json_encode($merger_info);
 }
-mysql_close();
+mysql_close_();
 

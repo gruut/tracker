@@ -35,5 +35,5 @@ else{
     mysql_update_urecordm_('merger', $result_arr, 'mID', $result_arr['mID']);
 }
 
-mysql_close();
+mysql_close_();
 
