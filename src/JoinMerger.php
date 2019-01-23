@@ -17,7 +17,7 @@ if(!checkMergerInfo($json_data)){
 
 $result_arr = mysql_open_($json_data);
 
-$merger_list = mysql_read_all_('merger');
+$merger_list = mysql_read_merger_info_();
 $se_list = mysql_read_all_('se');
 
 if($merger_list === false)

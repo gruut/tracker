@@ -147,6 +147,21 @@ function mysql_insert_($tbl_name, $toAdd){
    //insertIntoDB('myTable', $tToAdd)
 }
 
+function mysql_read_merger_info_(){
+	$q = 'SELECT mID, ip, port, mCert, hgt FROM merger';
+	$res = mysql_query_($q) OR die(mysql_error_());
+
+	if(!$res || mysqli_num_rows($res) == 0){
+		return false;
+	}
+
+	$return_array = array();
+	while($row = mysqli_fetch_assoc($res)){
+		$return_array[] = $row;
+	}
+	return $return_array;
+}
+
 function mysql_read_all_($tbl_name){
 	$q = 'SELECT * FROM `'.$tbl_name.'`';
 	$res = mysql_query_($q) OR die(mysql_error_());
