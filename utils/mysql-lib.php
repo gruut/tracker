@@ -147,8 +147,10 @@ function mysql_insert_($tbl_name, $toAdd){
    //insertIntoDB('myTable', $tToAdd)
 }
 
-function mysql_read_merger_info_(){
-	$q = 'SELECT mID, ip, port, mCert, hgt FROM merger';
+function mysql_read_merger_info_($key, $value){
+	$where_condition = '';
+	$where_condition .= " `" . $key . "` = '" . $value . "'";
+	$q = 'SELECT mID, ip, port, mCert, hgt FROM merger WHERE' . $where_condition;
 	$res = mysql_query_($q) OR die(mysql_error_());
 
 	if(!$res || mysqli_num_rows($res) == 0){
@@ -180,11 +182,11 @@ function mysql_read_all_($tbl_name){
 function mysql_read_($tbl_name, $toSearch){
 	$where_condition = '';
 	foreach ($toSearch as $key => $value) {
-		$where_condition .= " `" . $key . "` = '" . $value . "'";
+		$where_condition .= " `" . $key . "` = '" . $value . "'AND";
 	}
-	
 	$q = 'SELECT * FROM `' . $tbl_name . '` WHERE' . $where_condition;
-	
+	$q = substr($q, 0, strlen($q) - 3); // 뒤의 AND 삭제
+
 	$res = mysql_query_($q) OR die(mysql_error_());
 	
 	if (!$res || mysqli_num_rows($res) == 0) {
@@ -215,6 +217,29 @@ function mysql_read_urecord_($tbl_name, $key, $value){
 
 function mysql_update_urecord_($tbl_name,$attr_name,$attr_value,$unique_key,$unique_value){
 	mysql_query_("UPDATE " . $tbl_name . " SET " . $attr_name . " = '" . $attr_value . "' WHERE " . $unique_key  . " = '" . $unique_value . "'");
+}
+
+function mysql_update_($tbl_name, $toUpdate, $conditions){
+	$QUERY = "UPDATE " . $tbl_name . " SET ";
+	
+	foreach ($toUpdate as $key => $value) {
+		$QUERY .= "`" . $key . "` = '" . $value . "', ";
+	}
+
+	$QUERY = substr($QUERY, 0, strlen($QUERY) - 2); // 뒤의 (, ) 삭제
+
+	$where_condition = 'WHERE';
+	foreach ($conditions as $key => $value) {
+		$where_condition .= " `" . $key . "` = '" . $value . "'AND";
+	}
+
+	$QUERY .= $where_condition;
+
+	$QUERY = substr($QUERY, 0, strlen($QUERY) - 3); // 뒤의 AND 삭제
+
+	mysql_query_($QUERY);
+	
+	return true;
 }
 
 function mysql_update_urecordm_($tbl_name, $toUpdate, $ukey, $uvalue){

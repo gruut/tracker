@@ -8,6 +8,17 @@ if(empty($_POST)){
 
 $json_data = json_decode($_POST['message'],true);
 
+if(!isset($json_data['msgID'])){
+    return;
+}
+
+$msg_id = intval($json_data['msgID']);
+if(!checkMsgID('JOIN_MERGER', $msg_id)){
+    return;
+}
+
+unset($json_data['msgID']);
+
 if(!checkMergerInfo($json_data)){
     header("Content-type: application/json");
     http_response_code(500);
@@ -17,7 +28,7 @@ if(!checkMergerInfo($json_data)){
 
 $result_arr = mysql_open_($json_data);
 
-$merger_list = mysql_read_merger_info_();
+$merger_list = mysql_read_merger_info_('cID', $json_data['cID']);
 $se_list = mysql_read_all_('se');
 
 if($merger_list === false)
@@ -27,12 +38,17 @@ if($se_list === false)
 
 jsonResponse($merger_list, $se_list);
 
-$check_exist = mysql_read_urecord_('merger', 'mID', $result_arr['mID']);
+$search_record = array(
+    "mID" => $result_arr['mID'],
+    "cID" => $result_arr['cID']
+);
+
+$check_exist = mysql_read_('merger', $search_record);
 if(!$check_exist){
     mysql_insert_('merger', $result_arr);
 }
 else{
-    mysql_update_urecordm_('merger', $result_arr, 'mID', $result_arr['mID']);
+    mysql_update_('merger', $result_arr, $search_record);
 }
 
 mysql_close_();

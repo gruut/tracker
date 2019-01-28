@@ -4,6 +4,7 @@ function checkChainInfo($json_data){
         return false;
     }
     return  isset($json_data['mID'])&&
+            isset($json_data['cID'])&&
             isset($json_data['time'])&&
             isset($json_data['hgt'])&&
             isset($json_data['bID'])&&
@@ -20,6 +21,18 @@ function checkMergerInfo($json_data){
                 isset($json_data['port'])&&
                 isset($json_data['mCert']));
     return $check;
+}
+
+function checkMsgID($msg_type, $msg_id){
+    if($msg_type === 'JOIN_MERGER'){
+        return $msg_id === 112;
+    }
+
+    else if($msg_type === 'CHAIN_INFO'){
+        return $msg_id === 114;
+    }
+
+    return false;
 }
 
 function jsonResponse($merger_list, $se_list){
