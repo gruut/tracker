@@ -31,14 +31,19 @@ if(!checkChainInfo($json_data)){
 
 $result_arr = mysql_open_($json_data);
 
-$check_exist = mysql_read_urecord_('merger', 'mID', $result_arr['mID']);
+$search_record = array(
+    "mID" => $json_data['mID'],
+    "cID" => $json_data['cID']
+);
+
+$check_exist = mysql_read_('merger', $search_record);
 if(!$check_exist){
     header("Content-type: application/json");
     http_response_code(500);
     echo $json_data;
 }
 else{
-    mysql_update_urecordm_('merger', $result_arr, 'mID', $result_arr['mID']);
+    mysql_update_('merger', $result_arr, $search_record);
 }
 
 mysql_close_();
