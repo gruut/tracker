@@ -8,6 +8,17 @@ if(empty($_POST)){
 
 $json_data = json_decode($_POST['message'],true);
 
+if(!isset($json_data['msgID'])){
+    return;
+}
+
+$msg_id = intval($json_data['msgID']);
+if(!checkMsgID('JOIN_MERGER', $msg_id)){
+    return;
+}
+
+unset($json_data['msgID']);
+
 if(!checkMergerInfo($json_data)){
     header("Content-type: application/json");
     http_response_code(500);

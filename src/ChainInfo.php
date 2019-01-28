@@ -8,6 +8,20 @@ if(empty($_POST)){
 
 $json_data = json_decode($_POST['message'], true);
 
+$merger_sig = $json_data['mSig'];
+unset($json_data['mSig']);
+
+if(!isset($json_data['msgID'])){
+    return;
+}
+
+$msg_id = intval($json_data['msgID']);
+if(!checkMsgID('CHAIN_INFO', $msg_id)){
+    return;
+}
+
+unset($json_data['msgID']);
+
 if(!checkChainInfo($json_data)){
     header("Content-type: application/json");
     http_response_code(500);
