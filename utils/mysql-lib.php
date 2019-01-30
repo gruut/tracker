@@ -228,14 +228,14 @@ function mysql_update_($tbl_name, $toUpdate, $conditions){
 
 	$QUERY = substr($QUERY, 0, strlen($QUERY) - 2); // 뒤의 (, ) 삭제
 
-	$where_condition = 'WHERE';
+	$where_condition = ' WHERE';
 	foreach ($conditions as $key => $value) {
-		$where_condition .= " `" . $key . "` = '" . $value . "'AND";
+		$where_condition .= " `" . $key . "` = '" . $value . "' AND";
 	}
 
 	$QUERY .= $where_condition;
 
-	$QUERY = substr($QUERY, 0, strlen($QUERY) - 3); // 뒤의 AND 삭제
+	$QUERY = substr($QUERY, 0, strlen($QUERY) - 3); // 뒤의 ( AND) 삭제
 
 	mysql_query_($QUERY);
 	

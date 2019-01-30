@@ -23,9 +23,6 @@ if(!checkMsgID('CHAIN_INFO', $msg_id)){
 unset($json_data['msgID']);
 
 if(!checkChainInfo($json_data)){
-    header("Content-type: application/json");
-    http_response_code(500);
-    echo $json_data;
     return;
 }
 
@@ -43,7 +40,8 @@ if(!$check_exist){
     echo $json_data;
 }
 else{
+    unset($result_arr['mID']);
+    unset($result_arr['cID']);
     mysql_update_('merger', $result_arr, $search_record);
 }
-
 mysql_close_();
