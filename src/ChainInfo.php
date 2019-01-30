@@ -43,7 +43,8 @@ if(!$check_exist){
     echo $json_data;
 }
 else{
+    unset($result_arr['mID']);
+    unset($result_arr['cID']);
     mysql_update_('merger', $result_arr, $search_record);
 }
-
 mysql_close_();
